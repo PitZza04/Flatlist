@@ -1,32 +1,33 @@
 {
   "expo": {
-    "name": "Auto-mate",
+    "name": "automate",
     "slug": "automate",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/main-icon/app-icon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/main-icon/loading-photo.jpg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#d11515"
+      "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/main-icon/app-icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/main-icon/app-icon.png"
-    },
-    "plugins": ["expo-build-properties"]
+      "favicon": "./assets/favicon.png"
+    }
   }
 }
