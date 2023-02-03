@@ -7,139 +7,85 @@ import {
   Dimensions,
 } from "react-native";
 const windowHeight = Dimensions.get("window").height;
-const boxWidth = Dimensions.get("window").width / 4 - 16;
-console.log(boxWidth);
-export default App = () => {
-  const [brandID, setBrandID] = useState(undefined);
-  const brands = [
-    {
-      id: 1,
-      brand: "Toyota",
-      models: [
-        { id: 1, name: "Etios" },
-        { id: 2, name: "Fortuner" },
-        { id: 3, name: "Etios Cross" },
-        { id: 4, name: "Land Cruiser" },
-      ],
-    },
-    {
-      id: 2,
-      brand: "Honda",
-      models: [
-        { id: 1, name: "City IVTEC" },
-        { id: 2, name: "Brio" },
-        { id: 3, name: "City ZX" },
-        { id: 4, name: "CRV" },
-      ],
-    },
-    {
-      id: 3,
-      brand: "Subaru",
-      models: [
-        { id: 1, name: "Outback" },
-        { id: 2, name: "Impreza" },
-        { id: 3, name: "Leborg" },
-        { id: 4, name: "XV Crosstrek" },
-      ],
-    },
-    {
-      id: 4,
-      brand: "Suzuki",
-      models: [
-        { id: 1, name: "Swift" },
-        { id: 2, name: "Baleno" },
-        { id: 3, name: "Celerio" },
-        { id: 4, name: "Ertiga" },
-      ],
-    },
-    {
-      id: 5,
-      brand: "Mitsubishi",
-      models: [
-        { id: 1, name: "Swift" },
-        { id: 2, name: "Baleno" },
-        { id: 3, name: "Celerio" },
-        { id: 4, name: "Ertiga" },
-      ],
-    },
-    {
-      id: 6,
-      brand: "Isuzu",
-      models: [
-        { id: 1, name: "Swift" },
-        { id: 2, name: "Baleno" },
-        { id: 3, name: "Celerio" },
-        { id: 4, name: "Ertiga" },
-      ],
-    },
-    {
-      id: 7,
-      brand: "Isuzu",
-      models: [
-        { id: 1, name: "Swift" },
-        { id: 2, name: "Baleno" },
-        { id: 3, name: "Celerio" },
-        { id: 4, name: "Ertiga" },
-      ],
-    },
-    {
-      id: 8,
-      brand: "Cas",
-      models: [
-        { id: 1, name: "Swift" },
-        { id: 2, name: "Baleno" },
-        { id: 3, name: "Celerio" },
-        { id: 4, name: "Ertiga" },
-      ],
-    },
-  ];
-  const handleOnPress = useCallback(
-    (item) => {
-      //setModels(item);.
-      // console.log(item);
-      setBrandID((brandID) => brandID[item]);
-      console.log(brandID);
-      // setBrandID((prevData) => prevData[item]);
-      // console.log(brandID);
-    },
-    [brandID]
-  );
-  // const ShowModel = () => {
-  //   <View style={styles.modelWrapper}>
-  //     {brandID?.map((item) => (
-  //       <Text key={item.id}>{item.name}</Text>
-  //     ))}
-  //   </View>;
-  // };
-  // const renderVehicles = ({ item }) => (
-  //   <View>
-  //     <TouchableOpacity
-  //       style={styles.boxWrapper}
-  //       onPress={() => handleOnPress(item.id)}
-  //     >
-  //       <View style={[styles.brandWrapper, styles.boxShadow]}>
-  //         {/* onPress={handleOnPress(item.id)} */}
-  //         <Text style={styles.brand}>{item.brand}</Text>
-  //       </View>
-  //     </TouchableOpacity>
-  //   </View>
-  // );
+const boxWidth = Dimensions.get("window").width / 4 - 17;
+import brands from "./data/brands";
+
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+const BrandScreen = ({ navigation }) => (
+  <View style={styles.container}>
+    <View style={styles.vehicleWrapper}>
+      {brands.map(({ id, brand, models }) => (
+        <TouchableOpacity
+          key={id}
+          onPress={() =>
+            navigation.navigate("Model", {
+              id: id,
+              brand: brand,
+              models: models,
+            })
+          }
+        >
+          <View style={[styles.boxWrapper, styles.shadowStyle]}>
+            <View style={styles.brandWrapper}>
+              <Text style={styles.brand}>{brand}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </View>
+
+    {/* {brandID ? console.log("hello") : console.log("hi")} */}
+  </View>
+);
+const ModelScreen = ({ route, navigation }) => {
+  const { models } = route.params;
+  console.log(models);
+
   return (
     <View style={styles.container}>
       <View style={styles.vehicleWrapper}>
-        {brands.map(({ id, brand, models }) => (
-          <TouchableOpacity key={id - 1} onPress={() => handleOnPress(id)}>
-            <View style={styles.boxWrapper}>
-              <View style={[styles.brandWrapper]}>
-                <Text style={styles.brand}>{brand}</Text>
+        {models.map(({ id, name }) => (
+          <TouchableOpacity key={id}>
+            <View style={[styles.boxWrapper, styles.shadowStyle]}>
+              <View style={styles.brandWrapper}>
+                <Text style={styles.brand}>{name}</Text>
               </View>
             </View>
           </TouchableOpacity>
         ))}
       </View>
-
-      {brandID ? console.log("hello") : console.log("hi")}
     </View>
+  );
+};
+
+export default App = () => {
+  const Stack = createStackNavigator();
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ presentation: "modal" }}>
+        <Stack.Screen name="Brand" component={BrandScreen}></Stack.Screen>
+        <Stack.Screen name="Model" component={ModelScreen}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+
+    // <View style={styles.container}>
+    //   <View style={styles.vehicleWrapper}>
+    //     {brand.map(({ id, brand, models }) => (
+    //       <TouchableOpacity key={id} onPress={() => handleOnPress(id, models)}>
+    //         <View style={[styles.boxWrapper, styles.shadowStyle]}>
+    //           <View style={styles.brandWrapper}>
+    //             <Text style={styles.brand}>{brand}</Text>
+    //           </View>
+    //         </View>
+    //       </TouchableOpacity>
+    //     ))}
+    //   </View>
+
+    //   {/* {brandID ? console.log("hello") : console.log("hi")} */}
+    // </View>
   );
 };
 
@@ -147,19 +93,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    marginVertical: 50,
-    backgroundColor: "#fff",
+    backgroundColor: "#fafafa",
   },
   vehicleWrapper: {
-    flex: 1,
+    marginTop: 20,
     flexWrap: "wrap",
     flexDirection: "row",
     alignItems: "center",
+
     marginHorizontal: 10,
   },
   brandWrapper: {
     width: boxWidth,
     alignItems: "center",
+    justifyContent: "center",
   },
   modelWrapper: {
     flex: 1,
@@ -169,11 +116,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginBottom: 15,
     borderRadius: 10,
+  },
+  shadowStyle: {
+    borderWidth: 1,
+    borderColor: "#DADADA",
     shadowColor: "rgba(0, 0, 0, 0.25)",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 1,
     shadowRadius: 1,
-    elevation: 2,
   },
   // bodyWrapper: {
   //   flex: 1,
